@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 function Todo() {
@@ -6,16 +8,21 @@ function Todo() {
   const [newTask, setNewTask] = useState('');
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
+  const notifyTaskAdded = () => toast.success('Tarea Agregada');
+  const notifyTaskDeleted = () => toast.error('Tarea Eliminada');
+
   const handleAddTask = () => {
     if (newTask.trim() !== '') {
       setTasks([...tasks, newTask.trim()]);
       setNewTask('');
+      notifyTaskAdded();
     }
   };
 
   const handleDeleteTask = (index) => {
     const updatedTasks = tasks.filter((_, i) => i !== index);
     setTasks(updatedTasks);
+    notifyTaskDeleted();
   };
 
   return (
@@ -28,7 +35,7 @@ function Todo() {
         placeholder={
           tasks.length === 0
             ? "No hay tareas, añadir tareas"
-            : null  // Puedes usar null o una cadena vacía según tu preferencia
+            : null
         }
         value={newTask}
         onChange={(e) => setNewTask(e.target.value)}
@@ -60,11 +67,14 @@ function Todo() {
           ))}
         </ul>
       )}
+
+      <ToastContainer />
     </div>
   );
 }
 
 export default Todo;
+
 
 
 
